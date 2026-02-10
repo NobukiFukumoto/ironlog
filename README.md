@@ -1,4 +1,4 @@
-# Workout Record App (筋トレ記録アプリ)
+# Workout Record App
 
 A local Android PWA for tracking workouts, meals, and body weight. Features AI-powered food photo recognition, detailed stats, and offline support.
 

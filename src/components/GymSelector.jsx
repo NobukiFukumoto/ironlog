@@ -9,10 +9,11 @@ export default function GymSelector({ gymId, onChange }) {
 
   // Helper to ensure safe access even if gymId points to deleted gym
   const selectedGym = gyms.find(g => g.id === gymId);
-  const getDisplayName = (g) => {
-    if (!g) return '';
-    const machineName = g.machines && g.machines.length > 0 ? g.machines[0].name : '';
-    return machineName ? `${g.name} (${machineName})` : g.name;
+
+  const getGymLabel = (gym) => {
+    if (!gym) return '';
+    const machineName = gym.machines && gym.machines.length > 0 ? gym.machines[0].name : '';
+    return machineName ? `${gym.name} (${machineName})` : gym.name;
   };
 
   const handleGymSelect = (id) => {
@@ -33,7 +34,7 @@ export default function GymSelector({ gymId, onChange }) {
           onClick={() => setShowModal(true)}
           style={{ width: '100%', textAlign: 'left', padding: '12px 16px', borderRadius: '10px', border: 'none', backgroundColor: 'var(--card-bg)', color: gymId ? 'var(--text-primary)' : 'var(--text-placeholder)', fontSize: '17px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
         >
-          <span>{selectedGym ? getDisplayName(selectedGym) : t('record_select_gym')}</span>
+          <span>{selectedGym ? getGymLabel(selectedGym) : t('record_select_gym')}</span>
           <span style={{ color: 'var(--text-muted)', fontSize: '12px' }}>▼</span>
         </button>
       </div>
@@ -64,7 +65,7 @@ export default function GymSelector({ gymId, onChange }) {
                   className={`modal-item ${gymId === g.id ? 'active' : ''}`}
                   onClick={() => handleGymSelect(g.id)}
                 >
-                  <span>{getDisplayName(g)}</span>
+                  <span>{getGymLabel(g)}</span>
                   {gymId === g.id && <span className="modal-check">✓</span>}
                 </button>
               ))}
