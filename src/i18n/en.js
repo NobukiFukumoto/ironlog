@@ -1,6 +1,7 @@
 export const en = {
   // Navigation
   nav_record: 'Record',
+  nav_favorites: 'Favorites',
   nav_meals: 'Meals',
   nav_history: 'History',
   nav_stats: 'Stats',

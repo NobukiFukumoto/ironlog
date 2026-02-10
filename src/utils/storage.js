@@ -11,6 +11,7 @@ const KEYS = {
   CUSTOM_FOODS: 'tr-custom-foods',
   NUTRITION_GOALS: 'tr-nutrition-goals',
   API_KEY: 'tr-gemini-api-key',
+  FAVORITES: 'tr-favorites',
 };
 
 function getJSON(key, fallback = []) {
@@ -195,6 +196,27 @@ export function importAllData(jsonString) {
 
 export function deleteAllData() {
   Object.values(KEYS).forEach(key => localStorage.removeItem(key));
+}
+
+// --- Favorites ---
+export function getFavorites() {
+  return getJSON(KEYS.FAVORITES, []);
+}
+
+export function saveFavorite(favorite) {
+  const favorites = getFavorites();
+  const existing = favorites.findIndex(f => f.id === favorite.id);
+  if (existing >= 0) {
+    favorites[existing] = { ...favorite, updatedAt: new Date().toISOString() };
+  } else {
+    favorites.push({ ...favorite, id: favorite.id || uuidv4(), createdAt: new Date().toISOString() });
+  }
+  setJSON(KEYS.FAVORITES, favorites);
+  return favorite;
+}
+
+export function deleteFavorite(id) {
+  setJSON(KEYS.FAVORITES, getFavorites().filter(f => f.id !== id));
 }
 
 // --- Utility: dates with records ---

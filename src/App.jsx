@@ -4,6 +4,7 @@ import Header from './components/Header';
 import BottomNav from './components/BottomNav';
 import SideNav from './components/SideNav';
 import Record from './pages/Record';
+import Favorites from './pages/Favorites';
 import Meals from './pages/Meals';
 import History from './pages/History';
 import Stats from './pages/Stats';
@@ -13,9 +14,32 @@ import './index.css';
 function AppContent() {
   const [page, setPage] = useState('record');
 
+  // Lifted state for Record/Workout session
+  const today = new Date().toISOString().split('T')[0];
+  const [date, setDate] = useState(today);
+  const [gymId, setGymId] = useState(null);
+  const [exercises, setExercises] = useState([]);
+
+  const handleAddToWorkout = (exercise) => {
+    setExercises([...exercises, exercise]);
+    setPage('record');
+  };
+
   const renderPage = () => {
     switch (page) {
-      case 'record': return <Record />;
+      case 'record': 
+        return (
+          <Record 
+            date={date} 
+            setDate={setDate} 
+            gymId={gymId} 
+            setGymId={setGymId} 
+            exercises={exercises} 
+            setExercises={setExercises} 
+          />
+        );
+      case 'favorites':
+        return <Favorites onAddToWorkout={handleAddToWorkout} />;
       case 'meals': return <Meals />;
       case 'history': return <History />;
       case 'stats': return <Stats />;

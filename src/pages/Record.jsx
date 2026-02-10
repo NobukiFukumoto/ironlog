@@ -8,15 +8,11 @@ import StretchInput from '../components/StretchInput';
 import RestTimer from '../components/RestTimer';
 import GymSelector from '../components/GymSelector';
 
-export default function Record() {
+export default function Record({ date, setDate, gymId, setGymId, exercises, setExercises }) {
   const { t, getName } = useLanguage();
   const categories = getCategories();
   const gyms = getGyms();
-  const today = new Date().toISOString().split('T')[0];
-
-  const [date, setDate] = useState(today);
-  const [gymId, setGymId] = useState(null);
-  const [exercises, setExercises] = useState([]);
+  
   const [saved, setSaved] = useState(false);
 
   // Exercise being added

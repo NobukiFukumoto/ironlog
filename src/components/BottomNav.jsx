@@ -3,6 +3,7 @@ import { Icons } from './Icons';
 
 const tabs = [
   { key: 'record', Icon: Icons.Dumbbell, labelKey: 'nav_record' },
+  { key: 'favorites', Icon: Icons.Star, labelKey: 'nav_favorites' },
   { key: 'meals', Icon: Icons.Utensils, labelKey: 'nav_meals' },
   { key: 'history', Icon: Icons.Calendar, labelKey: 'nav_history' },
   { key: 'stats', Icon: Icons.Chart, labelKey: 'nav_stats' },
