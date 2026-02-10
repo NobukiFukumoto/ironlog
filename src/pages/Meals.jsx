@@ -1,12 +1,20 @@
 import { useState, useMemo } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { useLanguage } from '../i18n/LanguageContext';
-import { getMealsByDate, saveMealLog, getNutritionGoals } from '../utils/storage';
+import { getMealsByDate, saveMealLog } from '../utils/storage';
 import PhotoCapture from '../components/PhotoCapture';
 import FoodSearch from '../components/FoodSearch';
 import NutritionSummary from '../components/NutritionSummary';
 
 const MEAL_TYPES = ['breakfast', 'lunch', 'dinner', 'snack'];
+
+function loadMeals(d) {
+  const existing = getMealsByDate(d);
+  if (existing.length > 0) {
+    return existing[0].meals || [];
+  }
+  return MEAL_TYPES.map(type => ({ type, items: [] }));
+}
 
 export default function Meals() {
   const { t, getName } = useLanguage();
@@ -17,14 +25,6 @@ export default function Meals() {
   const [saved, setSaved] = useState(false);
   const [showFoodSearch, setShowFoodSearch] = useState(false);
   const [showPhoto, setShowPhoto] = useState(false);
-
-  function loadMeals(d) {
-    const existing = getMealsByDate(d);
-    if (existing.length > 0) {
-      return existing[0].meals || [];
-    }
-    return MEAL_TYPES.map(type => ({ type, items: [] }));
-  }
 
   const handleDateChange = (newDate) => {
     setDate(newDate);
@@ -162,9 +162,27 @@ export default function Meals() {
     <div className="page meals-page">
       <h1 className="page-title">{t('meals_title')}</h1>
 
-      <div className="input-group">
-        <label>{t('record_date')}</label>
-        <input type="date" value={date} onChange={e => handleDateChange(e.target.value)} />
+      <div className="date-navigation-container">
+        <label className="section-label" style={{ marginTop: 0 }}>{t('record_date')}</label>
+        <div className="date-navigation">
+          <button className="nav-btn" onClick={() => {
+            const d = new Date(date);
+            d.setDate(d.getDate() - 1);
+            handleDateChange(d.toISOString().split('T')[0]);
+          }}>‹</button>
+          
+          <input 
+            type="date" 
+            value={date} 
+            onChange={e => handleDateChange(e.target.value)} 
+          />
+          
+          <button className="nav-btn" onClick={() => {
+            const d = new Date(date);
+            d.setDate(d.getDate() + 1);
+            handleDateChange(d.toISOString().split('T')[0]);
+          }}>›</button>
+        </div>
       </div>
 
       <NutritionSummary totals={dailyTotals} />
