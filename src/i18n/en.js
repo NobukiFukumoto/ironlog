@@ -1,0 +1,143 @@
+export const en = {
+  // Navigation
+  nav_record: 'Record',
+  nav_meals: 'Meals',
+  nav_history: 'History',
+  nav_stats: 'Stats',
+  nav_settings: 'Settings',
+
+  // Record page
+  record_title: 'Workout',
+  record_date: 'Date',
+  record_category: 'Category',
+  record_exercise: 'Exercise',
+  record_add_exercise: 'Add Exercise',
+  record_save: 'Save Workout',
+  record_saving: 'Saving...',
+  record_saved: 'Workout saved!',
+  record_gym: 'Gym',
+  record_machine: 'Machine / Station',
+  record_select_gym: 'Select gym',
+  record_select_machine: 'Select machine',
+  record_no_gym: 'No gym',
+  record_select_category: 'Select category',
+  record_select_exercise: 'Select exercise',
+
+  // Set input
+  set_weight: 'Weight (kg)',
+  set_reps: 'Reps',
+  set_add: 'Add Set',
+  set_number: 'Set',
+
+  // Cardio
+  cardio_distance: 'Distance (km)',
+  cardio_duration: 'Duration (min)',
+
+  // Stretching
+  stretch_duration: 'Duration (sec)',
+
+  // Timer
+  timer_title: 'Rest Timer',
+  timer_start: 'Start',
+  timer_pause: 'Pause',
+  timer_reset: 'Reset',
+  timer_custom: 'Custom',
+  timer_finished: 'Time\'s up!',
+
+  // Meals page
+  meals_title: 'Meals',
+  meals_breakfast: 'Breakfast',
+  meals_lunch: 'Lunch',
+  meals_dinner: 'Dinner',
+  meals_snack: 'Snack',
+  meals_add_food: 'Add Food',
+  meals_save: 'Save Meals',
+  meals_saved: 'Meals saved!',
+  meals_photo: 'Photo Recognition',
+  meals_photo_take: 'Take Photo',
+  meals_photo_analyzing: 'Analyzing...',
+  meals_photo_error: 'Could not analyze photo. Please try again.',
+  meals_food_search: 'Search food...',
+  meals_serving: 'Serving (g)',
+  meals_custom_food: 'Add Custom Food',
+  meals_daily_total: 'Daily Total',
+  meals_goal: 'Goal',
+  meals_remaining: 'Remaining',
+
+  // Nutrients
+  nutrient_calories: 'Calories',
+  nutrient_protein: 'Protein',
+  nutrient_fat: 'Fat',
+  nutrient_carbs: 'Carbs',
+  nutrient_unit_kcal: 'kcal',
+  nutrient_unit_g: 'g',
+
+  // History
+  history_title: 'History',
+  history_no_records: 'No records for this date',
+  history_workout: 'Workout',
+  history_meals: 'Meals',
+  history_delete: 'Delete',
+  history_delete_confirm: 'Delete this record?',
+  history_edit: 'Edit',
+
+  // Stats
+  stats_title: 'Statistics',
+  stats_period_week: 'Week',
+  stats_period_month: 'Month',
+  stats_period_3months: '3 Months',
+  stats_training_days: 'Training Days',
+  stats_body_parts: 'Body Part Frequency',
+  stats_weight_progress: 'Weight Progress',
+  stats_estimated_1rm: 'Estimated 1RM',
+  stats_body_weight: 'Body Weight',
+  stats_calorie_trend: 'Calorie Trend',
+  stats_macro_breakdown: 'Macro Breakdown',
+  stats_select_exercise: 'Select exercise',
+  stats_no_data: 'No data available',
+
+  // Body weight
+  bodyweight_title: 'Body Weight',
+  bodyweight_input: 'Weight (kg)',
+  bodyweight_save: 'Save',
+  bodyweight_saved: 'Weight saved!',
+  bodyweight_trend: 'Weight Trend',
+
+  // Settings
+  settings_title: 'Settings',
+  settings_language: 'Language',
+  settings_gyms: 'Manage Gyms',
+  settings_gym_name: 'Gym Name',
+  settings_machine_name: 'Machine Name',
+  settings_add_gym: 'Add Gym',
+  settings_add_machine: 'Add Machine',
+  settings_machine_exists: 'Machine already exists in this gym',
+  settings_exercises: 'Custom Exercises',
+  settings_foods: 'Custom Foods',
+  settings_nutrition_goals: 'Nutrition Goals',
+  settings_api_key: 'Gemini API Key',
+  settings_api_key_hint: 'Required for photo food recognition',
+  settings_export: 'Export Data',
+  settings_import: 'Import Data',
+  settings_delete_all: 'Delete All Data',
+  settings_delete_confirm: 'Are you sure? This cannot be undone.',
+  settings_exported: 'Data exported!',
+  settings_imported: 'Data imported!',
+  settings_deleted: 'All data deleted.',
+
+  // Common
+  common_save: 'Save',
+  common_cancel: 'Cancel',
+  common_delete: 'Delete',
+  common_edit: 'Edit',
+  common_add: 'Add',
+  common_close: 'Close',
+  common_confirm: 'Confirm',
+  common_yes: 'Yes',
+  common_no: 'No',
+  common_today: 'Today',
+  common_kg: 'kg',
+  common_km: 'km',
+  common_min: 'min',
+  common_sec: 'sec',
+};

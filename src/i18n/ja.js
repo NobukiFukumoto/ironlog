@@ -1,0 +1,143 @@
+export const ja = {
+  // Navigation
+  nav_record: '記録',
+  nav_meals: '食事',
+  nav_history: '履歴',
+  nav_stats: '統計',
+  nav_settings: '設定',
+
+  // Record page
+  record_title: 'トレーニング',
+  record_date: '日付',
+  record_category: '部位',
+  record_exercise: '種目',
+  record_add_exercise: '種目を追加',
+  record_save: 'トレーニングを保存',
+  record_saving: '保存中...',
+  record_saved: '保存しました！',
+  record_gym: 'ジム',
+  record_machine: 'マシン・ステーション',
+  record_select_gym: 'ジムを選択',
+  record_select_machine: 'マシンを選択',
+  record_no_gym: 'ジムなし',
+  record_select_category: '部位を選択',
+  record_select_exercise: '種目を選択',
+
+  // Set input
+  set_weight: '重量 (kg)',
+  set_reps: '回数',
+  set_add: 'セット追加',
+  set_number: 'セット',
+
+  // Cardio
+  cardio_distance: '距離 (km)',
+  cardio_duration: '時間 (分)',
+
+  // Stretching
+  stretch_duration: '時間 (秒)',
+
+  // Timer
+  timer_title: 'レストタイマー',
+  timer_start: 'スタート',
+  timer_pause: '一時停止',
+  timer_reset: 'リセット',
+  timer_custom: 'カスタム',
+  timer_finished: '時間です！',
+
+  // Meals page
+  meals_title: '食事',
+  meals_breakfast: '朝食',
+  meals_lunch: '昼食',
+  meals_dinner: '夕食',
+  meals_snack: '間食',
+  meals_add_food: '食品を追加',
+  meals_save: '食事を保存',
+  meals_saved: '保存しました！',
+  meals_photo: '写真認識',
+  meals_photo_take: '写真を撮る',
+  meals_photo_analyzing: '解析中...',
+  meals_photo_error: '写真を解析できませんでした。もう一度お試しください。',
+  meals_food_search: '食品を検索...',
+  meals_serving: '量 (g)',
+  meals_custom_food: 'カスタム食品を追加',
+  meals_daily_total: '1日の合計',
+  meals_goal: '目標',
+  meals_remaining: '残り',
+
+  // Nutrients
+  nutrient_calories: 'カロリー',
+  nutrient_protein: 'タンパク質',
+  nutrient_fat: '脂質',
+  nutrient_carbs: '炭水化物',
+  nutrient_unit_kcal: 'kcal',
+  nutrient_unit_g: 'g',
+
+  // History
+  history_title: '履歴',
+  history_no_records: 'この日の記録はありません',
+  history_workout: 'トレーニング',
+  history_meals: '食事',
+  history_delete: '削除',
+  history_delete_confirm: 'この記録を削除しますか？',
+  history_edit: '編集',
+
+  // Stats
+  stats_title: '統計',
+  stats_period_week: '週',
+  stats_period_month: '月',
+  stats_period_3months: '3ヶ月',
+  stats_training_days: 'トレーニング日数',
+  stats_body_parts: '部位別頻度',
+  stats_weight_progress: '重量推移',
+  stats_estimated_1rm: '推定1RM',
+  stats_body_weight: '体重',
+  stats_calorie_trend: 'カロリー推移',
+  stats_macro_breakdown: 'マクロ栄養素内訳',
+  stats_select_exercise: '種目を選択',
+  stats_no_data: 'データがありません',
+
+  // Body weight
+  bodyweight_title: '体重',
+  bodyweight_input: '体重 (kg)',
+  bodyweight_save: '保存',
+  bodyweight_saved: '保存しました！',
+  bodyweight_trend: '体重推移',
+
+  // Settings
+  settings_title: '設定',
+  settings_language: '言語',
+  settings_gyms: 'ジム管理',
+  settings_gym_name: 'ジム名',
+  settings_machine_name: 'マシン名',
+  settings_add_gym: 'ジムを追加',
+  settings_add_machine: 'マシンを追加',
+  settings_machine_exists: 'このジムに同じ名前のマシンが既に存在します',
+  settings_exercises: 'カスタム種目',
+  settings_foods: 'カスタム食品',
+  settings_nutrition_goals: '栄養目標',
+  settings_api_key: 'Gemini APIキー',
+  settings_api_key_hint: '写真食品認識に必要です',
+  settings_export: 'データをエクスポート',
+  settings_import: 'データをインポート',
+  settings_delete_all: '全データを削除',
+  settings_delete_confirm: '本当によろしいですか？この操作は取り消せません。',
+  settings_exported: 'エクスポートしました！',
+  settings_imported: 'インポートしました！',
+  settings_deleted: '全データを削除しました。',
+
+  // Common
+  common_save: '保存',
+  common_cancel: 'キャンセル',
+  common_delete: '削除',
+  common_edit: '編集',
+  common_add: '追加',
+  common_close: '閉じる',
+  common_confirm: '確認',
+  common_yes: 'はい',
+  common_no: 'いいえ',
+  common_today: '今日',
+  common_kg: 'kg',
+  common_km: 'km',
+  common_min: '分',
+  common_sec: '秒',
+};
