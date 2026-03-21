@@ -144,4 +144,18 @@ export const en = {
   common_km: 'km',
   common_min: 'min',
   common_sec: 'sec',
+
+  // Auth
+  auth_title: 'Cloud Sync (Account)',
+  auth_login: 'Log In',
+  auth_signup: 'Sign Up',
+  auth_logout: 'Log Out',
+  auth_email: 'Email Address',
+  auth_password: 'Password',
+  auth_error: 'An error occurred',
+  auth_success: 'Successfully logged in',
+  auth_signup_success: 'Sign up successful.',
+  auth_not_logged_in: 'Not logged in (Local only)',
+  auth_logged_in_as: 'Syncing as: ',
+  auth_button: 'Log In / Sign Up',
 };

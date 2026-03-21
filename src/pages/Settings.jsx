@@ -6,10 +6,13 @@ import {
   getNutritionGoals, saveNutritionGoals,
   getApiKey, saveApiKey,
   exportAllData, importAllData, deleteAllData,
+  syncFromCloud
 } from '../utils/storage';
 import GymCard from '../components/GymCard';
 import ConfirmModal from '../components/ConfirmModal';
 import Modal from '../components/Modal';
+import { supabase } from '../lib/supabase';
+import { useEffect } from 'react';
 
 const SettingsIcon = ({ bgColor, children }) => (
   <div className="settings-icon" style={{ backgroundColor: bgColor }}>
@@ -17,6 +20,7 @@ const SettingsIcon = ({ bgColor, children }) => (
   </div>
 );
 
+const CloudIcon = () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg>;
 const GlobeIcon = () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><path d="M2 12h20"/></svg>;
 const KeyIcon = () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>;
 const TargetIcon = () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>;
@@ -34,6 +38,63 @@ export default function Settings() {
   const [toast, setToast] = useState('');
   const [confirmState, setConfirmState] = useState({ isOpen: false, type: null });
   const [activeModal, setActiveModal] = useState(null);
+
+  // Auth states
+  const [user, setUser] = useState(null);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [authLoading, setAuthLoading] = useState(false);
+
+  useEffect(() => {
+    if (!supabase) return;
+    
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user || null);
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user || null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const handleSignUp = async () => {
+    if (!supabase || !email || !password) return;
+    setAuthLoading(true);
+    const { error } = await supabase.auth.signUp({ email, password });
+    setAuthLoading(false);
+    if (error) {
+      alert(t('auth_error') + ': ' + error.message);
+    } else {
+      showToast(t('auth_signup_success'));
+      setActiveModal(null);
+    }
+  };
+
+  const handleLogin = async () => {
+    if (!supabase || !email || !password) return;
+    setAuthLoading(true);
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    setAuthLoading(false);
+    if (error) {
+      alert(t('auth_error') + ': ' + error.message);
+    } else {
+      showToast(t('auth_success'));
+      syncFromCloud().then(() => {
+        // UI強制更新のため一部ステートをリロード
+        setGyms(getGyms());
+        setGoals(getNutritionGoals());
+      });
+      setActiveModal(null);
+    }
+  };
+
+  const handleLogout = async () => {
+    if (!supabase) return;
+    await supabase.auth.signOut();
+    setActiveModal(null);
+  };
 
   const showToast = (msg) => {
     setToast(msg);
@@ -166,6 +227,16 @@ export default function Settings() {
       <h1 className="page-title">{t('settings_title')}</h1>
 
       <div className="settings-list">
+        <button className="settings-item" onClick={() => setActiveModal('auth')}>
+          <div className="settings-item-label">
+            <SettingsIcon bgColor="#007AFF"><CloudIcon /></SettingsIcon>
+            <span>{t('auth_title')}</span>
+          </div>
+          <span className="settings-item-value">{user ? t('auth_logged_in_as') + user.email : t('auth_not_logged_in')} &gt;</span>
+        </button>
+      </div>
+
+      <div className="settings-list">
         <button className="settings-item" onClick={() => setActiveModal('language')}>
           <div className="settings-item-label">
             <SettingsIcon bgColor="#0A84FF"><GlobeIcon /></SettingsIcon>
@@ -218,6 +289,42 @@ export default function Settings() {
       </div>
 
       {/* Modals */}
+      <Modal isOpen={activeModal === 'auth'} onClose={() => setActiveModal(null)} title={t('auth_title')}>
+        {user ? (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+            <p>{t('auth_logged_in_as')} <strong>{user.email}</strong></p>
+            <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
+              クラウド同期が有効です。データは自動的にバックアップ・同期されます。
+            </p>
+            <button className="btn-primary" style={{ backgroundColor: 'var(--accent-danger)' }} onClick={handleLogout}>{t('auth_logout')}</button>
+          </div>
+        ) : (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+            {(!supabase) && (
+              <p style={{ color: 'var(--accent-danger)', fontSize: '0.9rem', margin: 0 }}>
+                Supabaseの環境変数が設定されていません。`.env.local` を確認してください。
+              </p>
+            )}
+            <div className="input-group">
+              <label>{t('auth_email')}</label>
+              <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="Email" />
+            </div>
+            <div className="input-group">
+              <label>{t('auth_password')}</label>
+              <input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Password" />
+            </div>
+            <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
+              <button className="btn-primary" onClick={handleLogin} disabled={authLoading || !supabase} style={{ flex: 1 }}>
+                {authLoading ? '...' : t('auth_login')}
+              </button>
+              <button className="btn-secondary" onClick={handleSignUp} disabled={authLoading || !supabase} style={{ flex: 1 }}>
+                {authLoading ? '...' : t('auth_signup')}
+              </button>
+            </div>
+          </div>
+        )}
+      </Modal>
+
       <Modal isOpen={activeModal === 'language'} onClose={() => setActiveModal(null)} title={t('settings_language')}>
         <div className="language-toggle" style={{ marginBottom: 0 }}>
           <button className={`lang-btn ${lang === 'en' ? 'active' : ''}`} onClick={() => switchLanguage('en')}>English</button>

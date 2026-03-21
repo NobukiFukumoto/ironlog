@@ -144,4 +144,18 @@ export const ja = {
   common_km: 'km',
   common_min: '分',
   common_sec: '秒',
+
+  // Auth
+  auth_title: 'クラウド同期（アカウント）',
+  auth_login: 'ログイン',
+  auth_signup: '新規登録',
+  auth_logout: 'ログアウト',
+  auth_email: 'メールアドレス',
+  auth_password: 'パスワード',
+  auth_error: 'エラーが発生しました',
+  auth_success: 'ログインしました',
+  auth_signup_success: '登録が完了しました。',
+  auth_not_logged_in: '未ログイン (端末のみ保存)',
+  auth_logged_in_as: '同期中: ',
+  auth_button: 'ログイン / 登録',
 };

@@ -10,9 +10,26 @@ import History from './pages/History';
 import Stats from './pages/Stats';
 import Settings from './pages/Settings';
 import './index.css';
+import { useEffect } from 'react';
+import { syncFromCloud } from './utils/storage';
+import { supabase } from './lib/supabase';
 
 function AppContent() {
   const [page, setPage] = useState('record');
+
+  useEffect(() => {
+    if (!supabase) return;
+    
+    // Sync on initial load
+    syncFromCloud();
+    
+    // Listen for auth changes to sync immediately after login
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
+      if (event === 'SIGNED_IN') syncFromCloud();
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   // Lifted state for Record/Workout session
   const today = new Date().toISOString().split('T')[0];
