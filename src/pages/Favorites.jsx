@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { useLanguage } from '../i18n/LanguageContext';
 import { getCategories, getExercisesByCategory, getGyms, getFavorites, saveFavorite, deleteFavorite } from '../utils/storage';
 import { Icons } from '../components/Icons';
+import ConfirmModal from '../components/ConfirmModal';
 
 export default function Favorites({ onAddToWorkout }) {
   const { t, getName } = useLanguage();
@@ -11,6 +12,7 @@ export default function Favorites({ onAddToWorkout }) {
   
   const [favorites, setFavorites] = useState(() => getFavorites());
   const [isCreating, setIsCreating] = useState(false);
+  const [deleteConfirmId, setDeleteConfirmId] = useState(null);
   
   // Creation Form State
   const [selectedCategory, setSelectedCategory] = useState('');
@@ -57,10 +59,15 @@ export default function Favorites({ onAddToWorkout }) {
     resetForm();
   };
 
-  const handleDelete = (id) => {
-    if (window.confirm(t('confirm_delete') || 'Delete this favorite?')) {
-      deleteFavorite(id);
+  const requestDelete = (id) => {
+    setDeleteConfirmId(id);
+  };
+
+  const confirmDelete = () => {
+    if (deleteConfirmId) {
+      deleteFavorite(deleteConfirmId);
       loadFavorites();
+      setDeleteConfirmId(null);
     }
   };
 
@@ -187,9 +194,8 @@ export default function Favorites({ onAddToWorkout }) {
             <div key={fav.id} className="card favorite-card" style={{ marginBottom: '12px', padding: '16px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <h3 style={{ margin: 0 }}>{fav.exerciseName}</h3>
-                    <button className="icon-btn" onClick={() => handleDelete(fav.id)} style={{ color: '#ff4444' }}>
-                        <Icons.Utensils style={{ transform: 'rotate(45deg)' }} width={16} height={16} /> {/* Using Utensils as temp cross if X not avail, but we have X in remove-btn usually. Let's strictly use text or available icons */}
-                        ✕
+                    <button className="remove-btn" onClick={() => requestDelete(fav.id)} style={{ color: '#ff3b30' }}>
+                        <Icons.Trash width={20} height={20} />
                     </button>
                 </div>
                 
@@ -210,6 +216,16 @@ export default function Favorites({ onAddToWorkout }) {
             </div>
         ))}
       </div>
+
+      <ConfirmModal 
+        isOpen={!!deleteConfirmId}
+        message={t('favorite_delete_confirm') || 'Remove this from favorites?'}
+        confirmText={t('delete') || 'Delete'}
+        cancelText={t('cancel') || 'Cancel'}
+        onConfirm={confirmDelete}
+        onCancel={() => setDeleteConfirmId(null)}
+        isDanger={true}
+      />
     </div>
   );
 }

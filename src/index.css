@@ -317,6 +317,7 @@ input, select, button, textarea {
 /* Desktop Layout */
 @media (min-width: 768px) {
   .bottom-nav { display: none; }
+  .app-header { display: none; }
   .side-nav { display: flex; }
   .app-content {
     margin-left: 280px;
@@ -436,7 +437,7 @@ input, select, button, textarea {
 .set-header-row,
 .set-row {
   display: grid;
-  grid-template-columns: 32px 1fr 1fr 32px; /* Slightly wider index col */
+  grid-template-columns: 32px 1fr 1fr 40px 32px; /* Added 40px for checkbox col */
   gap: 12px;
   align-items: center;
 }
@@ -494,6 +495,27 @@ input, select, button, textarea {
 }
 .set-add-btn:active {
   background-color: rgba(10, 132, 255, 0.1);
+}
+
+.set-check-btn {
+  background: none;
+  border: 2px solid var(--text-muted);
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: transparent;
+  transition: all 0.2s;
+  padding: 0;
+}
+
+.set-check-btn.completed {
+  background-color: var(--accent-success, #34C759);
+  border-color: var(--accent-success, #34C759);
+  color: white;
 }
 
 /* --- Timer --- */
@@ -1370,6 +1392,16 @@ input, select, button, textarea {
 /* Adjust Content */
 .app-content {
   padding-top: calc(64px + 20px); /* Header height + spacing */
+}
+
+/* Hide header on Desktop and reset padding */
+@media (min-width: 768px) {
+  .app-header {
+    display: none !important;
+  }
+  .app-content {
+    padding-top: 40px !important;
+  }
 }
 
 /* Remove individual page titles since we have a header */

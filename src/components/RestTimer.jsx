@@ -3,12 +3,12 @@ import { useLanguage } from '../i18n/LanguageContext';
 
 const PRESETS = [60, 90, 120];
 
-export default function RestTimer() {
+export default function RestTimer({ autoExpand = false, autoStart = false, defaultSeconds = 60 }) {
   const { t } = useLanguage();
-  const [totalSeconds, setTotalSeconds] = useState(60);
-  const [remaining, setRemaining] = useState(60);
-  const [running, setRunning] = useState(false);
-  const [showTimer, setShowTimer] = useState(false);
+  const [totalSeconds, setTotalSeconds] = useState(defaultSeconds);
+  const [remaining, setRemaining] = useState(defaultSeconds);
+  const [running, setRunning] = useState(autoStart);
+  const [showTimer, setShowTimer] = useState(autoExpand);
   const [customInput, setCustomInput] = useState('');
   const [showCustom, setShowCustom] = useState(false);
   const intervalRef = useRef(null);

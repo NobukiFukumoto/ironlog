@@ -5,8 +5,8 @@ import { getCategories, getExercisesByCategory, saveWorkout, getGyms } from '../
 import SetInput from '../components/SetInput';
 import CardioInput from '../components/CardioInput';
 import StretchInput from '../components/StretchInput';
-import RestTimer from '../components/RestTimer';
 import GymSelector from '../components/GymSelector';
+import ConfirmModal from '../components/ConfirmModal';
 
 export default function Record({ date, setDate, gymId, setGymId, exercises, setExercises }) {
   const { t, getName } = useLanguage();
@@ -14,6 +14,7 @@ export default function Record({ date, setDate, gymId, setGymId, exercises, setE
   const gyms = getGyms();
   
   const [saved, setSaved] = useState(false);
+  const [deleteExerciseIndex, setDeleteExerciseIndex] = useState(null);
 
   // Exercise being added
   const [selectedCategory, setSelectedCategory] = useState('');
@@ -59,8 +60,10 @@ export default function Record({ date, setDate, gymId, setGymId, exercises, setE
     setExercises(updated);
   };
 
-  const removeExercise = (index) => {
-    setExercises(exercises.filter((_, i) => i !== index));
+  const confirmRemoveExercise = () => {
+    if (deleteExerciseIndex === null) return;
+    setExercises(exercises.filter((_, i) => i !== deleteExerciseIndex));
+    setDeleteExerciseIndex(null);
   };
 
   const handleSave = () => {
@@ -107,15 +110,13 @@ export default function Record({ date, setDate, gymId, setGymId, exercises, setE
           }}
         />
 
-        <RestTimer />
-
         {/* Exercise list */}
         <div className="exercise-list">
           {exercises.map((ex, i) => (
             <div key={ex.id} className="exercise-card">
               <div className="exercise-card-header">
                 <h3>{ex.exerciseName}</h3>
-                <button className="remove-btn" onClick={() => removeExercise(i)}>✕</button>
+                <button className="remove-btn" onClick={() => setDeleteExerciseIndex(i)}>✕</button>
               </div>
 
               {/* Machine Selector per Exercise */}
@@ -210,6 +211,16 @@ export default function Record({ date, setDate, gymId, setGymId, exercises, setE
 
         {saved && <div className="toast">{t('record_saved')}</div>}
       </div>
+
+      <ConfirmModal
+        isOpen={deleteExerciseIndex !== null}
+        message={t('common_delete') + "?\n(Delete this exercise?)"}
+        onConfirm={confirmRemoveExercise}
+        onCancel={() => setDeleteExerciseIndex(null)}
+        confirmText={t('common_delete')}
+        cancelText={t('common_cancel')}
+        isDanger={true}
+      />
     </div>
   );
 }

@@ -2,6 +2,7 @@ export const ja = {
   // Navigation
   nav_record: '記録',
   nav_favorites: 'お気に入り',
+  favorite_delete_confirm: 'このメニューをお気に入りから外しますか？',
   nav_meals: '食事',
   nav_history: '履歴',
   nav_stats: '統計',

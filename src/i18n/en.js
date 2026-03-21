@@ -2,6 +2,7 @@ export const en = {
   // Navigation
   nav_record: 'Record',
   nav_favorites: 'Favorites',
+  favorite_delete_confirm: 'Remove this from favorites?',
   nav_meals: 'Meals',
   nav_history: 'History',
   nav_stats: 'Stats',

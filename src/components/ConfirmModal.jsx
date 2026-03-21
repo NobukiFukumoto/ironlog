@@ -5,8 +5,8 @@ export default function ConfirmModal({ isOpen, message, onConfirm, onCancel, con
   if (!isOpen) return null;
 
   return createPortal(
-    <div className="confirm-modal-overlay">
-      <div className="confirm-modal-content">
+    <div className="confirm-modal-overlay" onClick={onCancel}>
+      <div className="confirm-modal-content" onClick={e => e.stopPropagation()}>
         <p className="confirm-modal-message">{message}</p>
         <div className="confirm-modal-actions">
           <button className="btn-secondary" onClick={onCancel}>{cancelText}</button>
