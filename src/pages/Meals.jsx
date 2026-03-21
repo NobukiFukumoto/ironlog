@@ -239,10 +239,10 @@ export default function Meals() {
       {/* Add food actions */}
       <div className="meal-actions">
         <button className="btn-secondary" onClick={() => { setShowFoodSearch(!showFoodSearch); setShowPhoto(false); }}>
-          🔍 {t('meals_add_food')}
+          {t('meals_add_food')}
         </button>
         <button className="btn-secondary" onClick={() => { setShowPhoto(!showPhoto); setShowFoodSearch(false); }}>
-          📸 {t('meals_photo')}
+          {t('meals_photo')}
         </button>
       </div>
 

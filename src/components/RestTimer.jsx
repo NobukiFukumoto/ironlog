@@ -79,7 +79,7 @@ export default function RestTimer() {
   return (
     <div className="rest-timer-wrapper">
       <button className="timer-toggle-btn" onClick={() => setShowTimer(!showTimer)}>
-        ⏱️ {t('timer_title')}
+        {t('timer_title')}
       </button>
 
       {showTimer && (

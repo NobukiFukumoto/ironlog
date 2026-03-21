@@ -68,7 +68,7 @@ export default function PhotoCapture({ onFoodsDetected }) {
             <span className="spinner" /> {t('meals_photo_analyzing')}
           </>
         ) : (
-          <>📸 {t('meals_photo_take')}</>
+          <>{t('meals_photo_take')}</>
         )}
       </button>
 

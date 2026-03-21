@@ -8,6 +8,22 @@ import {
   exportAllData, importAllData, deleteAllData,
 } from '../utils/storage';
 import GymCard from '../components/GymCard';
+import ConfirmModal from '../components/ConfirmModal';
+import Modal from '../components/Modal';
+
+const SettingsIcon = ({ bgColor, children }) => (
+  <div className="settings-icon" style={{ backgroundColor: bgColor }}>
+    {children}
+  </div>
+);
+
+const GlobeIcon = () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><path d="M2 12h20"/></svg>;
+const KeyIcon = () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>;
+const TargetIcon = () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>;
+const BuildingIcon = () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 21h18M4 21V5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v16M9 9h6M9 13h6M9 17h6"/></svg>;
+const ExportIcon = () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>;
+const ImportIcon = () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>;
+const TrashIcon = () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>;
 
 export default function Settings() {
   const { t, lang, switchLanguage } = useLanguage();
@@ -16,6 +32,8 @@ export default function Settings() {
   const [apiKey, setApiKey] = useState(() => getApiKey());
   const [newGymName, setNewGymName] = useState('');
   const [toast, setToast] = useState('');
+  const [confirmState, setConfirmState] = useState({ isOpen: false, type: null });
+  const [activeModal, setActiveModal] = useState(null);
 
   const showToast = (msg) => {
     setToast(msg);
@@ -120,47 +138,107 @@ export default function Settings() {
   };
 
   // Delete all
-  const handleDeleteAll = () => {
-    if (confirm(t('settings_delete_confirm'))) {
-      deleteAllData();
-      setGyms([]);
-      setGoals(getNutritionGoals());
-      setApiKey('');
-      showToast(t('settings_deleted'));
+  const executeDeleteAll = () => {
+    deleteAllData();
+    setGyms([]);
+    setGoals(getNutritionGoals());
+    setApiKey('');
+    showToast(t('settings_deleted'));
+  };
+
+  // Confirm Modal Handlers
+  const confirmAction = () => {
+    const type = confirmState.type;
+    setConfirmState({ isOpen: false, type: null });
+    if (type === 'export') {
+      handleExport();
+    } else if (type === 'import') {
+      handleImport();
+    } else if (type === 'delete') {
+      executeDeleteAll();
     }
   };
+
+  const cancelAction = () => setConfirmState({ isOpen: false, type: null });
 
   return (
     <div className="page settings-page">
       <h1 className="page-title">{t('settings_title')}</h1>
 
-      {/* Language */}
-      <div className="settings-section">
-        <h3>{t('settings_language')}</h3>
-        <div className="language-toggle">
+      <div className="settings-list">
+        <button className="settings-item" onClick={() => setActiveModal('language')}>
+          <div className="settings-item-label">
+            <SettingsIcon bgColor="#0A84FF"><GlobeIcon /></SettingsIcon>
+            <span>{t('settings_language')}</span>
+          </div>
+          <span className="settings-item-value">{lang === 'en' ? 'English' : '日本語'} &gt;</span>
+        </button>
+        <button className="settings-item" onClick={() => setActiveModal('apiKey')}>
+          <div className="settings-item-label">
+            <SettingsIcon bgColor="#5E5CE6"><KeyIcon /></SettingsIcon>
+            <span>{t('settings_api_key')}</span>
+          </div>
+          <span className="settings-item-value">{apiKey ? '********' : 'Not set'} &gt;</span>
+        </button>
+        <button className="settings-item" onClick={() => setActiveModal('nutrition')}>
+          <div className="settings-item-label">
+            <SettingsIcon bgColor="#30D158"><TargetIcon /></SettingsIcon>
+            <span>{t('settings_nutrition_goals')}</span>
+          </div>
+          <span className="settings-item-value">&gt;</span>
+        </button>
+        <button className="settings-item" onClick={() => setActiveModal('gyms')}>
+          <div className="settings-item-label">
+            <SettingsIcon bgColor="#FF9F0A"><BuildingIcon /></SettingsIcon>
+            <span>{t('settings_gyms')}</span>
+          </div>
+          <span className="settings-item-value">{gyms.length} {t('settings_gyms')} &gt;</span>
+        </button>
+      </div>
+
+      <div className="settings-list">
+        <button className="settings-item" onClick={() => setConfirmState({ isOpen: true, type: 'export' })}>
+          <div className="settings-item-label">
+            <SettingsIcon bgColor="#8E8E93"><ExportIcon /></SettingsIcon>
+            <span>{t('settings_export')}</span>
+          </div>
+        </button>
+        <button className="settings-item" onClick={() => setConfirmState({ isOpen: true, type: 'import' })}>
+          <div className="settings-item-label">
+            <SettingsIcon bgColor="#8E8E93"><ImportIcon /></SettingsIcon>
+            <span>{t('settings_import')}</span>
+          </div>
+        </button>
+        <button className="settings-item" onClick={() => setConfirmState({ isOpen: true, type: 'delete' })}>
+          <div className="settings-item-label">
+            <SettingsIcon bgColor="#FF453A"><TrashIcon /></SettingsIcon>
+            <span style={{ color: 'var(--accent-danger)' }}>{t('settings_delete_all')}</span>
+          </div>
+        </button>
+      </div>
+
+      {/* Modals */}
+      <Modal isOpen={activeModal === 'language'} onClose={() => setActiveModal(null)} title={t('settings_language')}>
+        <div className="language-toggle" style={{ marginBottom: 0 }}>
           <button className={`lang-btn ${lang === 'en' ? 'active' : ''}`} onClick={() => switchLanguage('en')}>English</button>
           <button className={`lang-btn ${lang === 'ja' ? 'active' : ''}`} onClick={() => switchLanguage('ja')}>日本語</button>
         </div>
-      </div>
+      </Modal>
 
-      {/* Gemini API Key */}
-      <div className="settings-section">
-        <h3>{t('settings_api_key')}</h3>
+      <Modal isOpen={activeModal === 'apiKey'} onClose={() => setActiveModal(null)} title={t('settings_api_key')}>
         <p className="hint">{t('settings_api_key_hint')}</p>
-        <div className="api-key-row">
+        <div className="input-group">
           <input
             type="password"
             value={apiKey}
             onChange={e => setApiKey(e.target.value)}
             placeholder="API Key"
           />
-          <button className="btn-primary btn-sm" onClick={handleApiKeySave}>{t('common_save')}</button>
         </div>
-      </div>
+        <button className="btn-primary btn-full" onClick={() => { handleApiKeySave(); setActiveModal(null); }}>{t('common_save')}</button>
+      </Modal>
 
-      {/* Nutrition Goals */}
-      <div className="settings-section">
-        <h3>{t('settings_nutrition_goals')}</h3>
+      <Modal isOpen={activeModal === 'nutrition'} onClose={() => setActiveModal(null)} title={t('settings_nutrition_goals')}>
         <div className="goals-grid">
           {[
             { key: 'calories', label: t('nutrient_calories'), unit: 'kcal' },
@@ -180,11 +258,9 @@ export default function Settings() {
             </div>
           ))}
         </div>
-      </div>
+      </Modal>
 
-      {/* Gym management */}
-      <div className="settings-section">
-        <h3>{t('settings_gyms')}</h3>
+      <Modal isOpen={activeModal === 'gyms'} onClose={() => setActiveModal(null)} title={t('settings_gyms')}>
         <div className="add-row">
           <input
             type="text"
@@ -202,16 +278,23 @@ export default function Settings() {
             onUpdateMachine={handleUpdateMachine}
           />
         ))}
-      </div>
-
-      {/* Data management */}
-      <div className="settings-section">
-        <button className="btn-secondary btn-full" onClick={handleExport}>📤 {t('settings_export')}</button>
-        <button className="btn-secondary btn-full" onClick={handleImport}>📥 {t('settings_import')}</button>
-        <button className="btn-danger btn-full" onClick={handleDeleteAll}>🗑️ {t('settings_delete_all')}</button>
-      </div>
+      </Modal>
 
       {toast && <div className="toast">{toast}</div>}
+
+      <ConfirmModal
+        isOpen={confirmState.isOpen}
+        message={
+          confirmState.type === 'export' ? t('settings_export_confirm') :
+          confirmState.type === 'import' ? t('settings_import_confirm') :
+          confirmState.type === 'delete' ? t('settings_delete_confirm') : ''
+        }
+        onConfirm={confirmAction}
+        onCancel={cancelAction}
+        confirmText={t('common_yes')}
+        cancelText={t('common_no')}
+        isDanger={confirmState.type === 'delete'}
+      />
     </div>
   );
 }

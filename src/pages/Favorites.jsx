@@ -178,7 +178,6 @@ export default function Favorites({ onAddToWorkout }) {
       <div className="favorites-list">
         {favorites.length === 0 && !isCreating && (
             <div className="empty-state">
-                <Icons.Star width={48} height={48} style={{ opacity: 0.2, marginBottom: '16px' }} />
                 <p>No favorite sets yet.</p>
                 <p>Add some to quickly build your workouts!</p>
             </div>

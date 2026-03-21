@@ -122,6 +122,8 @@ export const en = {
   settings_import: 'Import Data',
   settings_delete_all: 'Delete All Data',
   settings_delete_confirm: 'Are you sure? This cannot be undone.',
+  settings_export_confirm: 'Are you sure you want to export all data?',
+  settings_import_confirm: 'Are you sure you want to import data? Current data will be overwritten.',
   settings_exported: 'Data exported!',
   settings_imported: 'Data imported!',
   settings_deleted: 'All data deleted.',

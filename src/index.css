@@ -262,6 +262,14 @@ input, select, button, textarea {
 .side-nav-header {
   padding-bottom: 20px;
   margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.side-nav-header .header-logo {
+  height: 32px;
+  width: auto;
 }
 
 .side-nav-header h1 {
@@ -868,8 +876,11 @@ input, select, button, textarea {
 .calendar-dots {
   display: flex;
   gap: 3px;
-  margin-top: 4px;
-  height: 4px; /* Fixed height to prevent layout shift */
+  position: absolute;
+  bottom: 6px;
+  height: 4px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .dot {
@@ -1152,6 +1163,11 @@ input, select, button, textarea {
   border: none;
   background-color: var(--card-bg-secondary);
   color: var(--text-primary);
+  min-width: 0;
+}
+.bw-input-row button {
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .chart-container {
@@ -1325,7 +1341,7 @@ input, select, button, textarea {
   top: 0;
   left: 0;
   right: 0;
-  height: calc(44px + env(safe-area-inset-top)); /* Standard iOS header height */
+  height: calc(64px + env(safe-area-inset-top)); /* Standard iOS header height */
   padding-top: env(safe-area-inset-top);
   background-color: rgba(28, 28, 30, 0.85);
   backdrop-filter: blur(20px);
@@ -1339,21 +1355,21 @@ input, select, button, textarea {
 }
 
 .header-logo {
-  width: 24px;
-  height: 24px;
+  width: 32px;
+  height: 32px;
   margin-right: 8px;
   flex-shrink: 0;
 }
 
 .app-header h1 {
-  font-size: 20px; /* Slightly larger for left-aligned app title */
+  font-size: 24px; /* Larger for left-aligned app title */
   font-weight: 700;
   color: var(--text-primary);
 }
 
 /* Adjust Content */
 .app-content {
-  padding-top: calc(44px + 20px); /* Header height + spacing */
+  padding-top: calc(64px + 20px); /* Header height + spacing */
 }
 
 /* Remove individual page titles since we have a header */
@@ -1606,4 +1622,176 @@ input, select, button, textarea {
   background-color: rgba(10, 132, 255, 0.15);
 }
 
+/* --- Confirm Modal --- */
+.confirm-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 20px;
+}
 
+.confirm-modal-content {
+  background-color: var(--card-bg);
+  border-radius: var(--radius-l);
+  padding: 24px;
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+  animation: confirmModalPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes confirmModalPop {
+  0% { transform: scale(0.9); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.confirm-modal-message {
+  font-size: 17px;
+  color: var(--text-primary);
+  margin-bottom: 24px;
+  line-height: 1.5;
+}
+
+.confirm-modal-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.confirm-modal-actions button {
+  flex: 1;
+}
+
+/* --- Settings List --- */
+.settings-list {
+  background-color: var(--card-bg);
+  border-radius: var(--radius-l);
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+.settings-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px; /* slightly smaller padding to accommodate the icon gracefully */
+  background: none;
+  border: none;
+  width: 100%;
+  color: var(--text-primary);
+  font-size: 17px;
+  text-align: left;
+  cursor: pointer;
+  border-bottom: 0.5px solid rgba(255,255,255,0.1);
+  transition: background-color 0.2s;
+}
+
+.settings-item-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.settings-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  flex-shrink: 0;
+}
+
+.settings-icon svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+}
+
+.settings-item:last-child {
+  border-bottom: none;
+}
+
+.settings-item:active {
+  background-color: var(--card-bg-secondary);
+}
+
+.settings-item-value {
+  color: var(--text-muted);
+  font-size: 17px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Modals */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(0,0,0,0.5);
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  z-index: 2000;
+  padding: 16px;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+
+.modal-content {
+  background-color: var(--card-bg);
+  border-radius: var(--radius-l);
+  width: 100%;
+  max-width: 400px;
+  max-height: 90vh;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+  animation: modalPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes modalPop {
+  0% { transform: scale(0.9); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  border-bottom: 0.5px solid rgba(255,255,255,0.1);
+  flex-shrink: 0;
+}
+
+.modal-header h3 {
+  font-size: 20px;
+  margin: 0;
+}
+
+.modal-close-btn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 28px;
+  line-height: 1;
+  padding: 0 8px;
+  cursor: pointer;
+}
+
+.modal-body {
+  padding: 16px;
+  overflow-y: auto;
+  flex: 1 1 auto;
+}

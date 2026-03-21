@@ -16,6 +16,7 @@ export default function SideNav({ active, onNavigate }) {
   return (
     <nav className="side-nav">
       <div className="side-nav-header">
+        <img src="/logo.svg" alt="IronLog" className="header-logo" />
         <h1>IronLog</h1>
       </div>
       <div className="side-nav-items">

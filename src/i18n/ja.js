@@ -122,6 +122,8 @@ export const ja = {
   settings_import: 'データをインポート',
   settings_delete_all: '全データを削除',
   settings_delete_confirm: '本当によろしいですか？この操作は取り消せません。',
+  settings_export_confirm: '全データをエクスポートしますか？',
+  settings_import_confirm: 'データをインポートしますか？現在のデータは上書きされます。',
   settings_exported: 'エクスポートしました！',
   settings_imported: 'インポートしました！',
   settings_deleted: '全データを削除しました。',
