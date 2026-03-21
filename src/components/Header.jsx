@@ -5,6 +5,7 @@ export default function Header({ titleKey }) {
 
   return (
     <header className="app-header">
+      <img src="/logo.svg" alt="IronLog" className="header-logo" />
       <h1>{titleKey ? t(titleKey) : 'IronLog'}</h1>
     </header>
   );

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Left outer weight -->
+  <rect x="4" y="28" width="14" height="44" rx="5" fill="#0A84FF"/>
+  <!-- Left inner collar -->
+  <rect x="18" y="36" width="8" height="28" rx="3" fill="#0A84FF"/>
+  <!-- Bar -->
+  <rect x="26" y="45" width="48" height="10" rx="5" fill="#0A84FF"/>
+  <!-- Right inner collar -->
+  <rect x="74" y="36" width="8" height="28" rx="3" fill="#0A84FF"/>
+  <!-- Right outer weight -->
+  <rect x="82" y="28" width="14" height="44" rx="5" fill="#0A84FF"/>
+</svg>
